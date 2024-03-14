@@ -38,7 +38,15 @@ class _NoteListState extends State<NoteListScreen> {
               itemBuilder: (context, index) {
                 return Container(
                     decoration: BoxDecoration(color: Colors.blue[100 * index]),
-                    child: ListTile(title: Center(child: Text(notes[index]))));
+                    child: ListTile(
+                      title: Center(child: Text(notes[index])),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditNoteScreen()));
+                      },
+                    ));
               })),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -106,5 +114,42 @@ class AddNoteScreen extends StatelessWidget {
                                 })
                           ],
                         ))))));
+  }
+}
+
+class EditNoteScreen extends StatefulWidget {
+  @override
+  _EditState createState() => _EditState();
+}
+
+class _EditState extends State<EditNoteScreen> {
+  String editedNote = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Edit Note")),
+      body: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(labelText: 'Edit Note Content'),
+                maxLines: null,
+                onChanged: (value) {
+                  editedNote = value;
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                  onPressed: () {
+                    print("Edited Content: $editedNote");
+                    Navigator.pop(context);
+                  },
+                  child: Text('Save'))
+            ],
+          )),
+    );
   }
 }
